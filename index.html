@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alson Boat Tours — Discover the Albanian Riviera</title>
+    <meta name="description" content="Private sunset cruises, group tours and self-guided boat rentals along Karaburun, Sazan Island and the Albanian Riviera." />
+
+    <!-- Fonts: Fraunces (editorial serif display) + Inter (body/UI) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              navy: { 950:'#071021', 900:'#0B1F38', 850:'#0F2A4A', 800:'#15355C', 700:'#1D4370' },
+              cream: { 50:'#FCFAF5', 100:'#F6EFE0', 200:'#EFE4CC' },
+              sand: { 300:'#E4D6B4' },
+              gold: { 300:'#E6CE9C', 400:'#D6B679', 500:'#a18c6d', 600:'#A9843F', 700:'#8A6A31' },
+              ink: { 900:'#182437', 700:'#3C4A5E', 500:'#66768C' },
+              teal: { 600:'#2E6863', 700:'#204A47' },
+              wa: { 500:'#25D366', 600:'#1FB855' },
+            },
+            fontFamily: {
+              display: ['"Fraunces"', 'serif'],
+              body: ['"Inter"', 'sans-serif'],
+            },
+            letterSpacing: { widest2: '.28em' },
+          }
+        }
+      }
+    </script>
+
+    <!-- Alpine (mobile menu / nav state only) -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+  </head>
+
+  <body class="font-body text-ink-900 antialiased" x-data="{}">
+
+    <!-- ============ NAV ============ -->
+    <header x-data="{ open:false, scrolled:false }" x-init="window.addEventListener('scroll', () => scrolled = window.scrollY > 40)"
+            class="fixed top-0 inset-x-0 z-50 transition-colors duration-500"
+            :class="scrolled ? 'nav-blur border-b border-white/10' : 'bg-transparent'">
+      <div class="max-w-7xl mx-auto px-6 lg:px-10">
+        <div class="flex items-center justify-between h-20">
+          <a href="#home" class="flex items-baseline gap-1 shrink-0">
+            <img src="assets/images/alsonboat.svg" alt="logo" width="205px">
+          </a>
+
+          <nav class="hidden lg:flex items-center gap-10 text-[13px] tracking-wide uppercase text-white/90">
+            <a href="#experience" class="link-underline pb-1">About</a>
+            <a href="#sunset-tour" class="link-underline pb-1">Sunset Tour</a>
+            <a href="#group-tours" class="link-underline pb-1">Group Tours</a>
+            <a href="#private-tours" class="link-underline pb-1">Private Tours</a>
+            <a href="#rent-a-boat" class="link-underline pb-1">Rent a Boat</a>
+          </nav>
+
+          <button type="button" @click="$store.booking.openModal()" class="hidden lg:inline-flex items-center gap-2 bg-gold-500 hover:bg-gold-600 text-navy-950 text-[12px] font-semibold tracking-widest2 uppercase px-6 py-3 transition-colors text-white">
+            Book Now
+          </button>
+
+          <button @click="open = !open" class="lg:hidden text-white p-2" aria-label="Toggle menu">
+            <svg x-show="!open" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
+            <svg x-show="open" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div x-show="open" x-transition x-cloak class="lg:hidden nav-blur border-t border-white/10">
+        <div class="px-6 py-6 flex flex-col gap-5 text-white text-sm uppercase tracking-wide">
+          <a @click="open=false" href="#experience">About</a>
+          <a @click="open=false" href="#sunset-tour">Sunset Tour</a>
+          <a @click="open=false" href="#group-tours">Group Tours</a>
+          <a @click="open=false" href="#private-tours">Private Tours</a>
+          <a @click="open=false" href="#rent-a-boat">Rent a Boat</a>
+          <button type="button" @click="open=false; $store.booking.openModal()" class="mt-2 inline-block text-center bg-gold-500 text-navy-950 font-semibold py-3 text-white">Book Now</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============ HERO ============ -->
+    <section id="home" class="relative min-h-[100svh] flex flex-col justify-end overflow-hidden bg-navy-950">
+      <!-- fallback image layer -->
+      <!-- <div class="absolute inset-0 bg-cover bg-center kb"
+           style="background-image:url('assets/images/hero-img.jpeg');"></div> -->
+      <!-- video layer -->
+      <video class="absolute inset-0 w-full h-full object-cover" autoplay muted loop playsinline
+             poster="assets/videos/">
+        <source src="assets/videos/hero-video.mp4" type="video/mp4">
+      </video>
+      <!-- overlay -->
+      <div class="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/55 to-navy-950/25"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-navy-950/70 via-transparent to-navy-950/30"></div>
+
+      <div class="relative z-10 max-w-7xl mx-auto w-full px-6 lg:px-10 pt-40 pb-40">
+        <p class="reveal text-gold-300 text-[12px] font-semibold tracking-widest2 uppercase mb-6 flex items-center gap-3">
+          <span class="w-8 h-px bg-gold-400"></span> Alson Boat Tours · Vlorë, Albania
+        </p>
+        <h1 class="reveal font-display text-white text-[2.6rem] leading-[1.08] sm:text-6xl lg:text-7xl max-w-3xl font-light">
+          Discover the Stunning<br class="hidden sm:block"> <span class="italic text-gold-300">Albanian</span> Coastline
+        </h1>
+        <p class="reveal mt-7 max-w-xl text-white/80 text-[15px] sm:text-base leading-relaxed">
+          Welcome to Alson Boat Tour, your ultimate choice for exploring the stunning Albanian coastline. We offer exclusive boat tours to Karaburun, Sazan Island, and the breathtaking southern Riviera, giving you the chance to experience the crystal-clear waters, hidden beaches, and rich history of this unique region.
+        </p>
+        <div class="reveal mt-10 flex flex-wrap items-center gap-5">
+          <button type="button" @click="$store.booking.openModal()" class="inline-flex items-center gap-2 bg-gold-500 hover:bg-gold-600 text-navy-950 text-[12px] font-semibold tracking-widest2 uppercase px-8 py-4 transition-colors text-white">
+            Book Now
+          </button>
+          <a href="#experience" class="inline-flex items-center gap-2 text-white text-[12px] font-semibold tracking-widest2 uppercase border border-white/40 hover:border-gold-400 hover:text-gold-300 px-8 py-4 transition-colors">
+            Explore More
+          </a>
+        </div>
+      </div>
+
+      <!-- docked yacht-type cards -->
+      <div class="relative z-10 max-w-7xl mx-auto w-full px-6 lg:px-10 mb-6">
+        <p class="text-gold-300/90 text-[11px] tracking-widest2 uppercase mb-4">Our Popular Yachts</p>
+        <div class="grid sm:grid-cols-3 gap-5">
+          <a href="#sunset-tour" class="glass card-hover group p-5 flex flex-col justify-between h-40">
+            <div class="flex items-start justify-between">
+              <h3 class="font-display text-lg text-white">Private Tours</h3>
+              <svg class="w-4 h-4 text-gold-300 -mt-1 -mr-1 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+            </div>
+            <p class="text-white/65 text-[13px] leading-relaxed">Albanian sunsets are a hidden gem — no better way to experience them than from the sea.</p>
+            <p class="text-gold-300 text-sm font-medium">Starting from €220</p>
+          </a>
+          <a href="#group-tours" class="glass card-hover group p-5 flex flex-col justify-between h-40">
+            <div class="flex items-start justify-between">
+              <h3 class="font-display text-lg text-white">Group Tours</h3>
+              <svg class="w-4 h-4 text-gold-300 -mt-1 -mr-1 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+            </div>
+            <p class="text-white/65 text-[13px] leading-relaxed">Experience something truly unique and off-the-beaten-path.</p>
+            <p class="text-gold-300 text-sm font-medium">Starting from €30/person</p>
+          </a>
+          <a href="#rent-a-boat" class="glass card-hover group p-5 flex flex-col justify-between h-40">
+            <div class="flex items-start justify-between">
+              <h3 class="font-display text-lg text-white">Rent a Boat</h3>
+              <svg class="w-4 h-4 text-gold-300 -mt-1 -mr-1 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+            </div>
+            <p class="text-white/65 text-[13px] leading-relaxed">Prefer to captain your own adventure? Rent a speedboat without a skipper.</p>
+            <p class="text-gold-300 text-sm font-medium">Starting from €220</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- spacer for docked cards -->
+    <div class="h-24 sm:h-20 bg-cream-50"></div>
+
+    <!-- ============ EXPERIENCE ============ -->
+    <section id="experience" class="bg-cream-50 py-24 lg:py-32">
+      <div class="max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-2 gap-16 items-center">
+
+        <div class="reveal relative order-2 lg:order-1">
+          <div class="relative aspect-[4/5] max-w-md ml-auto lg:ml-0">
+            <div class="img-zoom absolute inset-0 border-4 border-cream-50 shadow-2xl">
+              <div class="zoom-el kb w-full h-full bg-cover bg-center" style="background-image:url('assets/images/our-experience-1.jpeg')"></div>
+            </div>
+            <div class="img-zoom absolute -bottom-10 -left-10 w-2/3 aspect-[4/3] border-4 border-cream-50 shadow-2xl hidden sm:block">
+              <div class="zoom-el kb w-full h-full bg-cover bg-center" style="background-image:url('assets/images/our-experience-2.jpeg')"></div>
+            </div>
+            <div class="absolute -top-6 -right-6 w-24 h-24 border border-gold-500/60 hidden sm:block"></div>
+          </div>
+        </div>
+
+        <div class="order-1 lg:order-2">
+          <p class="reveal text-gold-600 text-[12px] font-semibold tracking-widest2 uppercase mb-5 flex items-center gap-3">
+            <span class="w-8 h-px bg-gold-500"></span> Our Experience
+          </p>
+          <h2 class="reveal font-display text-4xl sm:text-5xl leading-[1.1] text-navy-900 mb-7">
+            Luxury Boat Journeys,<br><span class="italic text-gold-600">Tailored</span> for You
+          </h2>
+          <p class="reveal text-ink-700 leading-relaxed mb-4">
+            With a deep passion for the sea and adventure, Alson Boat Tour is led by an experienced team dedicated to creating unforgettable experiences for every guest.
+          </p>
+          <p class="reveal text-ink-700 leading-relaxed mb-9">
+            Whether you're looking for a thrilling ride through the turquoise waters of the Ionian Sea, a relaxing day on a secluded beach, or a journey through history and nature, we guarantee top-quality service and safety.
+          </p>
+          <button type="button" @click="$store.booking.openModal()" class="reveal inline-flex items-center gap-3 text-navy-900 text-[12px] font-semibold tracking-widest2 uppercase border-b-2 border-gold-500 pb-2 hover:gap-5 transition-all">
+            Book a Tour
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- wave divider cream -> sand -->
+    <div class="bg-cream-50">
+      <svg viewBox="0 0 1440 90" class="wave" preserveAspectRatio="none"><path fill="#F6EFE0" d="M0,32 C240,80 480,0 720,24 C960,48 1200,88 1440,40 L1440,90 L0,90 Z"/></svg>
+    </div>
+
+    <!-- ============ CAPTAIN ============ -->
+    <section id="captain" class="relative bg-cream-100 py-24 lg:py-32 overflow-hidden">
+      <svg class="compass absolute -right-24 -top-25 w-[520px] h-[520px] text-navy-900" viewBox="0 0 200 200" fill="none" stroke="currentColor">
+        <circle cx="100" cy="100" r="92" stroke-width="1"/>
+        <circle cx="100" cy="100" r="70" stroke-width="1"/>
+        <path d="M100 8 L100 30 M100 170 L100 192 M8 100 L30 100 M170 100 L192 100" stroke-width="1"/>
+        <path d="M100 20 L108 100 L100 180 L92 100 Z" stroke-width="1"/>
+        <path d="M20 100 L100 92 L180 100 L100 108 Z" stroke-width="1"/>
+      </svg>
+
+      <div class="max-w-4xl mx-auto px-6 lg:px-10 relative">
+        <div class="grid lg:grid-cols-[220px_1fr] gap-12 items-center">
+          <div class="reveal mx-auto lg:mx-0">
+            <div class="relative w-40 h-40 lg:w-48 lg:h-48">
+              <div class="absolute inset-0 rounded-full border border-gold-500/50 scale-110"></div>
+              <div class="w-full h-full rounded-full bg-cover bg-center shadow-xl" style="background-image:url('assets/images/our-experience-1.jpeg')"></div>
+            </div>
+          </div>
+
+          <div class="text-center lg:text-left">
+            <p class="reveal text-gold-600 text-[12px] font-semibold tracking-widest2 uppercase mb-4">Our Captain</p>
+            <h2 class="reveal font-display text-4xl text-navy-900 mb-6">Meet Captain Lenci</h2>
+            <p class="reveal text-ink-700 leading-relaxed mb-4">
+              At the heart of Alson Boat Tour is Captain Lenci, a seasoned sea expert with over 15 years of experience navigating and exploring the hidden gems of the Albanian coast. With extensive knowledge of the area and a deep passion for the sea, Captain Lenci ensures a safe, comfortable, and truly immersive experience.
+            </p>
+            <p class="reveal text-ink-700 leading-relaxed mb-8">
+              Whether you're looking for an adventurous tour or a peaceful retreat, Captain Lenci and the Alson Boat Tour team will make sure your journey is unforgettable.
+            </p>
+            <p class="reveal text-ink-500 text-sm italic mb-4">For more photos of our trips and adventures, visit our Instagram page</p>
+            <a href="https://www.instagram.com/viaggi_turistici_karaburun" target="_blank" rel="noopener" class="reveal inline-flex items-center gap-2 bg-navy-900 hover:bg-navy-800 text-white text-[12px] font-semibold tracking-widest2 uppercase px-7 py-3.5 transition-colors">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+              @Alson Boat Tour Instagram
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SUNSET TOUR ============ -->
+    <section id="sunset-tour" class="bg-navy-900 py-24 lg:py-32">
+      <div class="max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-2 gap-16 items-start">
+
+        <div>
+          <p class="reveal text-gold-300 text-[12px] font-semibold tracking-widest2 uppercase mb-5 flex items-center gap-3">
+            <span class="w-8 h-px bg-gold-400"></span> Our Tours
+          </p>
+          <h2 class="reveal font-display text-4xl sm:text-5xl text-white mb-7">Private Sunset Tour</h2>
+          <p class="reveal text-white/70 leading-relaxed mb-4">
+            Albanian sunsets are a hidden gem, and there's no better way to experience them than from the sea. As the golden sun dips behind the cliffs of the Karaburun Peninsula, the sky transforms into a breathtaking masterpiece, creating an unforgettable moment.
+          </p>
+          <p class="reveal text-white/70 leading-relaxed mb-10">
+            Join our Private Sunset Tour and cruise along Vlora Bay and Karaburun on a luxurious Alson speedboat, guided by Captain Lenci, an experienced local seafarer.
+          </p>
+
+          <dl class="reveal divide-y divide-white/10 border-t border-b border-white/10">
+            <div class="py-5 grid grid-cols-[28px_120px_1fr] items-start gap-4">
+              <svg class="w-5 h-5 text-gold-400 mt-0.5" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <dt class="text-white/50 text-[13px] tracking-wide uppercase">What's Included</dt>
+              <dd class="text-white/85 text-sm leading-relaxed">Life jackets · All fees and taxes · 1 drink per person (beer included) · Fresh seasonal fruits</dd>
+            </div>
+            <div class="py-5 grid grid-cols-[28px_120px_1fr] items-center gap-4">
+              <svg class="w-5 h-5 text-gold-400" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M12 7v5l3 3"/></svg>
+              <dt class="text-white/50 text-[13px] tracking-wide uppercase">Duration</dt>
+              <dd class="text-white/85 text-sm">2.5 hours (17:30 – 20:00)</dd>
+            </div>
+            <div class="py-5 grid grid-cols-[28px_120px_1fr] items-center gap-4">
+              <svg class="w-5 h-5 text-gold-400" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21s-7-6.1-7-11a7 7 0 1114 0c0 4.9-7 11-7 11z"/><circle cx="12" cy="10" r="2.4"/></svg>
+              <dt class="text-white/50 text-[13px] tracking-wide uppercase">Departure</dt>
+              <dd class="text-white/85 text-sm">Vlora Port</dd>
+            </div>
+            <div class="py-5 grid grid-cols-[28px_120px_1fr] items-center gap-4">
+              <svg class="w-5 h-5 text-gold-400" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path stroke-linecap="round" d="M3 10h18"/></svg>
+              <dt class="text-white/50 text-[13px] tracking-wide uppercase">Price</dt>
+              <dd class="text-white/85 text-sm">250€ total</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="reveal">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="img-zoom col-span-2 aspect-[16/10]">
+              <div class="zoom-el kb w-full h-full bg-cover bg-center" style="background-image:url('assets/images/tour-private-1.jpeg')"></div>
+            </div>
+            <div class="img-zoom aspect-square">
+              <div class="zoom-el kb w-full h-full bg-cover bg-center" style="background-image:url('assets/images/tour-private-2.jpeg')"></div>
+            </div>
+            <div class="img-zoom aspect-square">
+              <div class="zoom-el kb w-full h-full bg-cover bg-center" style="background-image:url('assets/images/tour-private-3.jpeg')"></div>
+            </div>
+          </div>
+          <p class="mt-6 text-white/70 text-sm italic">Book your trip now and witness the most magical sunset over the Ionian Sea!</p>
+          <button type="button" @click="$store.booking.openModal('Private Sunset Tour')" class="mt-5 inline-flex items-center gap-2 bg-gold-500 hover:bg-gold-600 text-navy-950 text-[12px] font-semibold tracking-widest2 uppercase px-8 py-4 transition-colors">Book Now</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- wave divider navy -> cream -->
+    <div class="bg-navy-900">
+      <svg viewBox="0 0 1440 90" class="wave" preserveAspectRatio="none"><path fill="#FCFAF5" d="M0,50 C240,10 480,90 720,50 C960,10 1200,70 1440,30 L1440,90 L0,90 Z"/></svg>
+    </div>
+
+    <!-- ============ GROUP TOURS ============ -->
+    <section id="group-tours" class="bg-cream-50 py-24 lg:py-32">
+      <div class="max-w-7xl mx-auto px-6 lg:px-10">
+        <div class="reveal flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-14">
+          <div>
+            <p class="text-gold-600 text-[12px] font-semibold tracking-widest2 uppercase mb-5 flex items-center gap-3">
+              <span class="w-8 h-px bg-gold-500"></span> Popular Destinations
+            </p>
+            <h2 class="font-display text-4xl sm:text-5xl text-navy-900">Group Tours</h2>
+          </div>
+          <p class="text-ink-700 max-w-sm">Discover breathtaking locations for your next adventure and unforgettable experiences.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-7">
+          <button type="button" @click="$store.booking.openModal('Karaburun Peninsula & Haxhi Ali Cave')" class="reveal img-zoom card-hover relative aspect-[3/4] block group w-full text-left">
+            <div class="zoom-el kb absolute inset-0 bg-cover bg-center" style="background-image:url('assets/images/tour-1.jpeg')"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-navy-950/90 via-navy-950/10 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-6">
+              <h3 class="font-display text-xl text-white mb-1">Karaburun Peninsula &amp; Haxhi Ali Cave</h3>
+              <p class="text-gold-300 text-sm mb-3">€30/person</p>
+              <span class="text-white text-[11px] tracking-widest2 uppercase inline-flex items-center gap-2">Book Now
+                <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+              </span>
+            </div>
+          </button>
+
+          <button type="button" @click="$store.booking.openModal('Karaburun Peninsula, Haxhi Ali Cave & Sazan Island')" class="reveal img-zoom card-hover relative aspect-[3/4] block group w-full text-left">
+            <div class="zoom-el kb absolute inset-0 bg-cover bg-center" style="background-image:url('assets/images/tour-2.jpeg')"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-navy-950/90 via-navy-950/10 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-6">
+              <h3 class="font-display text-xl text-white mb-1">Karaburun Peninsula, Haxhi Ali Cave &amp; Sazan Island</h3>
+              <p class="text-gold-300 text-sm mb-3">€35/person</p>
+              <span class="text-white text-[11px] tracking-widest2 uppercase inline-flex items-center gap-2">Book Now
+                <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+              </span>
+            </div>
+          </button>
+
+          <button type="button" @click="$store.booking.openModal('Secret Cave Tour')" class="reveal img-zoom card-hover relative aspect-[3/4] block group w-full text-left">
+            <div class="zoom-el kb absolute inset-0 bg-cover bg-center" style="background-image:url('assets/images/tour-3.jpeg')"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-navy-950/90 via-navy-950/10 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-6">
+              <h3 class="font-display text-xl text-white mb-1">Secret Cave Tour</h3>
+              <p class="text-gold-300 text-sm mb-3">€75/person</p>
+              <span class="text-white text-[11px] tracking-widest2 uppercase inline-flex items-center gap-2">Book Now
+                <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+              </span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PRIVATE EXCLUSIVE TOURS ============ -->
+    <section id="private-tours" class="bg-cream-100 py-24 lg:py-32">
+      <div class="max-w-7xl mx-auto px-6 lg:px-10">
+        <div class="reveal flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-14">
+          <div>
+            <p class="text-gold-600 text-[12px] font-semibold tracking-widest2 uppercase mb-5 flex items-center gap-3">
+              <span class="w-8 h-px bg-gold-500"></span> Popular Destinations
+            </p>
+            <h2 class="font-display text-4xl sm:text-5xl text-navy-900 max-w-md">Private Exclusive Tours</h2>
+          </div>
+          <p class="text-ink-700 max-w-md">For those looking for a more intimate and customized experience, Alson Boat Tour offers private tours for 2–5 people, allowing you to explore Karaburun, Sazan, and the Albanian Riviera at your own pace, in complete comfort.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-8" x-data="{}">
+          <!-- Card template repeated x6 -->
+          <!-- Card 1 -->
+          <article class="reveal bg-cream-50 card-hover flex flex-col">
+            <div class="img-zoom aspect-[16/10]">
+              <div class="zoom-el kb w-full h-full bg-cover bg-center" style="background-image:url('assets/images/tour-1.jpeg')"></div>
+            </div>
+            <div class="p-7 flex flex-col flex-1">
+              <h3 class="font-display text-lg text-navy-900 mb-2 leading-snug">Karaburun (4 Bays) + Haxhi Ali Cave</h3>
+              <p class="text-ink-500 text-[13px] leading-relaxed mb-4">Cruise along the breathtaking Karaburun Peninsula, explore Haxhi Ali Cave, Zhanpovel Bay, Skanavia Bay, Pellumb Bay, Shen Jan Bay and relax on a stunning beach until 4:00 PM.</p>
+
+              <div class="text-[12.5px] text-ink-700 space-y-1.5 mb-4">
+                <p><span class="text-navy-900 font-semibold">Departure:</span> 08:00 · 09:00 · 10:30</p>
+                <p><span class="text-navy-900 font-semibold">Return:</span> 15:00 · 16:00 · 17:00</p>
+              </div>
+
+              <p class="text-[11px] tracking-widest2 uppercase text-gold-600 font-semibold mb-2">What's included</p>
+              <ul class="grid grid-cols-2 gap-x-3 gap-y-1.5 text-[12.5px] text-ink-700 mb-6">
+                <li class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-gold-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Snorkeling gear</li>
+                <li class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-gold-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Life jackets</li>
+                <li class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-gold-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>All fees &amp; taxes</li>
+                <li class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-gold-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>1 drink/person</li>
+              </ul>
+
+              <div class="mt-auto flex items-center justify-between pt-5 border-t border-sand-300">
+                <div class="text-[12px] text-ink-700 space-y-0.5">
+                  <p><span class="font-semibold text-navy-900">€340</span>/day <span class="text-ink-500">· 2–6 people</span></p>
+                  <p><span class="font-semibold text-navy-900">€380</span>/day <span class="text-ink-500">· 7–14 people</span></p>
+                </div>
+                <button type="button" @click="$store.booking.openModal('Karaburun (4 Bays) + Haxhi Ali Cave')" class="shrink-0 bg-navy-900 hover:bg-gold-600 text-white text-[11px] tracking-widest2 uppercase font-semibold px-5 py-3 transition-colors">Book</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="reveal bg-cream-50 card-hover flex flex-col">
+            <div class="img-zoom aspect-[16/10]">
+              <div class="zoom-el kb w-full h-full bg-cover bg-center" style="background-image:url('assets/images/tour-private-4.jpeg')"></div>
+            </div>
+            <div class="p-7 flex flex-col flex-1">
+              <h3 class="font-display text-lg text-navy-900 mb-2 leading-snug">Karaburun + Haxhi Ali Cave + Sazan Island</h3>
+              <p class="text-ink-500 text-[13px] leading-relaxed mb-4">Cruise along the breathtaking Karaburun Peninsula, explore Haxhi Ali Cave and Sazan Island, and relax on a stunning beach until 4:00 PM.</p>
+
+              <div class="text-[12.5px] text-ink-700 space-y-1.5 mb-4">
+                <p><span class="text-navy-900 font-semibold">Departure:</span> 08:00 · 09:00 · 10:30</p>
+                <p><span class="text-navy-900 font-semibold">Return:</span> 15:00 · 16:00 · 17:00</p>
+              </div>
+
+              <p class="text-[11px] tracking-widest2 uppercase text-gold-600 font-semibold mb-2">What's included</p>
+              <ul class="grid grid-cols-2 gap-x-3 gap-y-1.5 text-[12.5px] text-ink-700 mb-6">
+                <li class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-gold-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Snorkeling gear</li>
+                <li class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-gold-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Life jackets</li>
+                <li class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-gold-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>All fees &amp; taxes</li>
+                <li class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-gold-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>1 drink/person</li>
+              </ul>
+
+              <div class="mt-auto flex items-center justify-between pt-5 border-t border-sand-300">
+                <div class="text-[12px] text-ink-700 space-y-0.5">
+                  <p><span class="font-semibold text-navy-900">€360</span>/day <span class="text-ink-500">· 2–6 people</span></p>
+                  <p><span class="font-semibold text-navy-900">€400</span>/day <span class="text-ink-500">· 7–14 people</span></p>
+                </div>
+                <button type="button" @click="$store.booking.openModal('Karaburun + Haxhi Ali Cave + Sazan Island')" class="shrink-0 bg-navy-900 hover:bg-gold-600 text-white text-[11px] tracking-widest2 uppercase font-semibold px-5 py-3 transition-colors">Book</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="reveal bg-cream-50 card-hover flex flex-col">
+            <div class="img-zoom aspect-[16/10]">
+              <div class="zoom-el kb w-full h-full bg-cover bg-center" style="background-image:url('assets/images/tour-5.jpeg')"></div>
+            </div>
+            <div class="p-7 flex flex-col flex-1">
+              <h3 class="font-display text-lg text-navy-900 mb-2 leading-snug">Karaburun + Haxhi Ali Cave + Gjiri &amp; Shpella e Dafinës</h3>
+              <p class="text-ink-500 text-[13px] leading-relaxed mb-4">40 minutes at Dafina Bay, exploration of Karaburun, and a beach stop, until 4:00 PM.</p>
+
+              <div class="text-[12.5px] text-ink-700 space-y-1.5 mb-4">
+                <p><span class="text-navy-900 font-semibold">Departure:</span> 08:00 · 09:00 · 10:30</p>
+                <p><span class="text-navy-900 font-semibold">Return:</span> 15:00 · 16:00 · 17:00</p>
+              </div>
+
+              <p class="text-[11px] tracking-widest2 uppercase text-gold-600 font-semibold mb-2">What's included</p>
+              <ul class="grid grid-cols-2 gap-x-3 gap-y-1.5 text-[12.5px] text-ink-700 mb-6">
+                <li class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-gold-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Snorkeling gear</li>
+                <li class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-gold-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Life jackets</li>
+                <li class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-gold-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>All fees &amp; taxes</li>
+                <li class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-gold-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>1 drink/person</li>
+              </ul>
+
+              <div class="mt-auto flex items-center justify-between pt-5 border-t border-sand-300">
+                <div class="text-[12px] text-ink-700 space-y-0.5">
+                  <p><span class="font-semibold text-navy-900">€370</span>/day <span class="text-ink-500">· 2–6 people</span></p>
+                  <p><span class="font-semibold text-navy-900">€410</span>/day <span class="text-ink-500">· 7–14 people</span></p>
+                </div>
+                <button type="button" @click="$store.booking.openModal('Karaburun + Haxhi Ali Cave + Gjiri & Shpella e Dafinës')" class="shrink-0 bg-navy-900 hover:bg-gold-600 text-white text-[11px] tracking-widest2 uppercase font-semibold px-5 py-3 transition-colors">Book</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 4 -->
+          <article class="reveal bg-cream-50 card-hover flex flex-col">
+            <div class="img-zoom aspect-[16/10]">
+              <div class="zoom-el kb w-full h-full bg-cover bg-center" style="background-image:url('assets/images/tour-private-4.jpeg')"></div>
+            </div>
+            <div class="p-7 flex flex-col flex-1">
+              <h3 class="font-display text-lg text-navy-900 mb-2 leading-snug">Karaburun + Haxhi Ali Cave + Gjiri &amp; Shpella e Dafinës + Gjiri i Bristanit</h3>
+              <p class="text-ink-500 text-[13px] leading-relaxed mb-4">30 minutes at Bristan Bay, plus a relaxing stop until 4:00 PM.</p>
+
+              <div class="text-[12.5px] text-ink-700 space-y-1.5 mb-4">
+                <p><span class="text-navy-900 font-semibold">Departure:</span> 08:00 · 09:00 · 10:30</p>
+                <p><span class="text-navy-900 font-semibold">Return:</span> 15:00 · 16:00 · 17:00</p>
+              </div>
+
+              <p class="text-[11px] tracking-widest2 uppercase text-gold-600 font-semibold mb-2">What's included</p>
+              <ul class="grid grid-cols-2 gap-x-3 gap-y-1.5 text-[12.5px] text-ink-700 mb-6">
+                <li class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-gold-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Snorkeling gear</li>
+                <li class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-gold-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Life jackets</li>
+                <li class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-gold-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>All fees &amp; taxes</li>
+                <li class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-gold-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>1 drink/person</li>
+              </ul>
+
+              <div class="mt-auto flex items-center justify-between pt-5 border-t border-sand-300">
+                <div class="text-[12px] text-ink-700 space-y-0.5">
+                  <p><span class="font-semibold text-navy-900">€390</span>/day <span class="text-ink-500">· 2–6 people</span></p>
+                  <p><span class="font-semibold text-navy-900">€430</span>/day <span class="text-ink-500">· 7–14 people</span></p>
+                </div>
+                <button type="button" @click="$store.booking.openModal('Karaburun + Haxhi Ali Cave + Gjiri & Shpella e Dafinës + Gjiri i Bristanit')" class="shrink-0 bg-navy-900 hover:bg-gold-600 text-white text-[11px] tracking-widest2 uppercase font-semibold px-5 py-3 transition-colors">Book</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 5 -->
+          <article class="reveal bg-cream-50 card-hover flex flex-col">
+            <div class="img-zoom aspect-[16/10]">
+              <div class="zoom-el kb w-full h-full bg-cover bg-center" style="background-image:url('assets/images/tour-6.jpeg')"></div>
+            </div>
+            <div class="p-7 flex flex-col flex-1">
+              <h3 class="font-display text-lg text-navy-900 mb-2 leading-snug">Karaburun + Haxhi Ali Cave + Gjiri &amp; Shpella e Dafinës + Gjiri i Bristanit + Anglezit + Secret Cave</h3>
+              <p class="text-ink-500 text-[13px] leading-relaxed mb-4">30 minutes at Bristan Bay, at Englishman Bay, and 1 hour at the Secret Cave, until 4:00 PM.</p>
+
+              <div class="text-[12.5px] text-ink-700 space-y-1.5 mb-4">
+                <p><span class="text-navy-900 font-semibold">Departure:</span> 08:00 · 09:00 · 10:30</p>
+                <p><span class="text-navy-900 font-semibold">Return:</span> 15:00 · 16:00 · 17:00</p>
+              </div>
+
+              <p class="text-[11px] tracking-widest2 uppercase text-gold-600 font-semibold mb-2">What's included</p>
+              <ul class="grid grid-cols-2 gap-x-3 gap-y-1.5 text-[12.5px] text-ink-700 mb-6">
+                <li class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-gold-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Snorkeling gear</li>
+                <li class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-gold-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Life jackets</li>
+                <li class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-gold-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>All fees &amp; taxes</li>
+                <li class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-gold-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>1 drink/person</li>
+              </ul>
+
+              <div class="mt-auto flex items-center justify-between pt-5 border-t border-sand-300">
+                <div class="text-[12px] text-ink-700 space-y-0.5">
+                  <p><span class="font-semibold text-navy-900">€460</span>/day <span class="text-ink-500">· 2–6 people</span></p>
+                  <p><span class="font-semibold text-navy-900">€520</span>/day <span class="text-ink-500">· 7–14 people</span></p>
+                </div>
+                <button type="button" @click="$store.booking.openModal('Karaburun + Haxhi Ali Cave + Gjiri & Shpella e Dafinës + Gjiri i Bristanit + Anglezit + Secret Cave')" class="shrink-0 bg-navy-900 hover:bg-gold-600 text-white text-[11px] tracking-widest2 uppercase font-semibold px-5 py-3 transition-colors">Book</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 6 -->
+          <article class="reveal bg-cream-50 card-hover flex flex-col">
+            <div class="img-zoom aspect-[16/10]">
+              <div class="zoom-el kb w-full h-full bg-cover bg-center" style="background-image:url('assets/images/tour-private-4.jpeg')"></div>
+            </div>
+            <div class="p-7 flex flex-col flex-1">
+              <h3 class="font-display text-lg text-navy-900 mb-2 leading-snug">Grama Bay + All Previous Destinations</h3>
+              <p class="text-ink-500 text-[13px] leading-relaxed mb-4">A full exploration of the Riviera, including 1 hour at Grama Bay, plus relaxation on a beautiful beach in Karaburun until 4:00 PM.</p>
+
+              <div class="text-[12.5px] text-ink-700 space-y-1.5 mb-4">
+                <p><span class="text-navy-900 font-semibold">Departure:</span> 08:00 · 09:00 · 10:30</p>
+                <p><span class="text-navy-900 font-semibold">Return:</span> 15:00 · 16:00 · 17:00</p>
+              </div>
+
+              <p class="text-[11px] tracking-widest2 uppercase text-gold-600 font-semibold mb-2">What's included</p>
+              <ul class="grid grid-cols-2 gap-x-3 gap-y-1.5 text-[12.5px] text-ink-700 mb-6">
+                <li class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-gold-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Snorkeling gear</li>
+                <li class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-gold-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Life jackets</li>
+                <li class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-gold-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>All fees &amp; taxes</li>
+                <li class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-gold-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>1 drink/person</li>
+              </ul>
+
+              <div class="mt-auto flex items-center justify-between pt-5 border-t border-sand-300">
+                <div class="text-[12px] text-ink-700 space-y-0.5">
+                  <p><span class="font-semibold text-navy-900">€590</span>/day <span class="text-ink-500">· 2–6 people</span></p>
+                  <p><span class="font-semibold text-navy-900">€650</span>/day <span class="text-ink-500">· 7–14 people</span></p>
+                </div>
+                <button type="button" @click="$store.booking.openModal('Grama Bay + All Previous Destinations')" class="shrink-0 bg-navy-900 hover:bg-gold-600 text-white text-[11px] tracking-widest2 uppercase font-semibold px-5 py-3 transition-colors">Book</button>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <p class="reveal text-center text-ink-500 text-xs mt-10">* Prices shown are indicative — please confirm exact seasonal rates with the Alson team before booking.</p>
+      </div>
+    </section>
+
+    <!-- ============ RENT A BOAT ============ -->
+    <section id="rent-a-boat" class="bg-navy-900 py-24 lg:py-32">
+      <div class="max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-2 gap-16 items-center">
+        <div class="order-2 lg:order-1">
+          <p class="reveal text-gold-300 text-[12px] font-semibold tracking-widest2 uppercase mb-5 flex items-center gap-3">
+            <span class="w-8 h-px bg-gold-400"></span> Rent a Boat
+          </p>
+          <h2 class="reveal font-display text-4xl sm:text-5xl text-white mb-3">Explore on Your Own!</h2>
+          <p class="reveal text-gold-300/90 text-sm tracking-wide uppercase mb-7">Self-Guided Tours</p>
+          <p class="reveal text-white/70 leading-relaxed mb-9">
+            For those who prefer to captain their own adventure, we offer the option to rent a speedboat without a skipper. Whether you want a relaxing cruise along the coast or an adventurous day exploring hidden beaches, the choice is yours.
+          </p>
+
+          <div class="reveal grid sm:grid-cols-2 gap-6 mb-9">
+            <div class="border border-white/15 p-5">
+              <p class="text-white/50 text-[11px] tracking-widest2 uppercase mb-2">Half-Day</p>
+              <p class="font-display text-2xl text-white mb-1">220€</p>
+              <p class="text-white/50 text-xs">4 hours</p>
+            </div>
+            <div class="border border-white/15 p-5">
+              <p class="text-white/50 text-[11px] tracking-widest2 uppercase mb-2">Full-Day</p>
+              <p class="font-display text-2xl text-white mb-1">280€</p>
+              <p class="text-white/50 text-xs">7 hours</p>
+            </div>
+          </div>
+
+          <ul class="reveal text-white/70 text-sm space-y-2 mb-9">
+            <li class="flex gap-2"><span class="text-gold-400">·</span> Fuel is not included — you only pay for the fuel you consume.</li>
+            <li class="flex gap-2"><span class="text-gold-400">·</span> Capacity: 2–9 people</li>
+            <li class="flex gap-2"><span class="text-gold-400">·</span> Departure: Vlora Port</li>
+          </ul>
+
+          <p class="reveal text-white/60 text-sm italic mb-6">Book your adventure today and experience the beauty of Vlora's coastline at your own pace!</p>
+          <button type="button" @click="$store.booking.openModal()" class="reveal inline-flex items-center gap-2 bg-gold-500 hover:bg-gold-600 text-navy-950 text-[12px] font-semibold tracking-widest2 uppercase px-8 py-4 transition-colors">Book Now</button>
+        </div>
+
+        <div class="reveal order-1 lg:order-2 grid grid-cols-2 gap-4">
+          <div class="img-zoom aspect-[3/4]">
+            <div class="zoom-el kb w-full h-full bg-cover bg-center" style="background-image:url('assets/images/tour-7.jpeg')"></div>
+          </div>
+          <div class="img-zoom aspect-[3/4] mt-10">
+            <div class="zoom-el kb w-full h-full bg-cover bg-center" style="background-image:url('assets/images/tour-private-3.jpeg')"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT / CTA STRIP ============ -->
+    <section id="contact" class="bg-cream-100 py-20">
+      <div class="max-w-4xl mx-auto px-6 text-center reveal">
+        <p class="text-gold-600 text-[12px] font-semibold tracking-widest2 uppercase mb-5">Ready When You Are</p>
+        <h2 class="font-display text-3xl sm:text-4xl text-navy-900 mb-6">Let's put you on the water.</h2>
+        <p class="text-ink-700 max-w-xl mx-auto mb-9">Call, message, or email us to check availability and lock in your date on the Albanian Riviera.</p>
+        <div class="flex flex-wrap items-center justify-center gap-8">
+          <a href="tel:+355696962382" class="flex items-center gap-3 text-navy-900 hover:text-gold-600 transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5c0 9.4 6.6 16 16 16l2-4-5-2-2 2c-2-1-4.5-3.5-5.5-5.5l2-2-2-5-4 2Z"/></svg>
+            <span>+355 69 69 62 382</span>
+          </a>
+          <a href="mailto:info@alsonboattour.com" class="flex items-center gap-3 text-navy-900 hover:text-gold-600 transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M3 7l9 6 9-6"/></svg>
+            <span>info@alsonboattour.com</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="bg-navy-950 pt-20 pb-8">
+      <div class="max-w-7xl mx-auto px-6 lg:px-10">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-12 pb-14 border-b border-white/10">
+          <div class="lg:col-span-2">
+            <a href="#home" class="flex items-baseline gap-1 mb-5">
+              <img src="assets/images/alsonboat.svg" alt="logo" width="205px">
+            </a>
+            <p class="text-white/55 text-sm leading-relaxed max-w-xs">Private cruises, group tours and boat rentals along Karaburun, Sazan Island and the Albanian Riviera.</p>
+            <div class="flex items-center gap-4 mt-6">
+              <a href="https://www.instagram.com/viaggi_turistici_karaburun" target="_blank" rel="noopener" class="w-9 h-9 flex items-center justify-center border border-white/20 hover:border-gold-400 hover:text-gold-300 text-white/70 transition-colors">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+              </a>
+              <a href="#" class="w-9 h-9 flex items-center justify-center border border-white/20 hover:border-gold-400 hover:text-gold-300 text-white/70 transition-colors">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M18 2h-3a4 4 0 00-4 4v3H8v4h3v9h4v-9h3l1-4h-4V6a1 1 0 011-1h3z"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <div>
+            <p class="text-white text-sm font-semibold tracking-wide uppercase mb-5">Explore</p>
+            <ul class="space-y-3 text-white/55 text-sm">
+              <li><a href="#experience" class="hover:text-gold-300 transition-colors">About</a></li>
+              <li><a href="#sunset-tour" class="hover:text-gold-300 transition-colors">Sunset Tour</a></li>
+              <li><a href="#group-tours" class="hover:text-gold-300 transition-colors">Group Tours</a></li>
+              <li><a href="#private-tours" class="hover:text-gold-300 transition-colors">Private Tours</a></li>
+              <li><a href="#rent-a-boat" class="hover:text-gold-300 transition-colors">Rent a Boat</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <p class="text-white text-sm font-semibold tracking-wide uppercase mb-5">Contact Us At</p>
+            <ul class="space-y-3 text-white/55 text-sm">
+              <li><a href="tel:+355 69 69 62 382" class="hover:text-gold-300 transition-colors">+355 69 69 62 382</a></li>
+              <li><a href="tel:+355 69 94 94 001" class="hover:text-gold-300 transition-colors">+355 69 94 94 001</a></li>
+              <li class="pt-2">Mail us at</li>
+              <li><a href="mailto:info@alsonboattour.com" class="hover:text-gold-300 transition-colors">info@alsonboattour.com</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-white/40 text-xs">
+          <p>Copyright © 2026 Alson Boat Tours. All rights reserved.</p>
+          <p class="flex items-center gap-2"><span class="divider-dot"></span> Vlorë, Albania</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- ============ BOOKING MODAL ============ -->
+    <div x-show="$store.booking.open" x-cloak
+         class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+
+      <!-- backdrop -->
+      <div x-show="$store.booking.open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+           x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+           @click="$store.booking.close()" class="absolute inset-0 bg-navy-950/80 backdrop-blur-sm"></div>
+
+      <!-- panel -->
+      <div x-show="$store.booking.open"
+           x-transition:enter="transition ease-out duration-350" x-transition:enter-start="opacity-0 translate-y-6 scale-[.98]" x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+           x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0 translate-y-4"
+           class="relative w-full max-w-xl max-h-[92vh] overflow-y-auto bg-cream-50 shadow-2xl">
+
+        <!-- close -->
+        <button type="button" @click="$store.booking.close()" aria-label="Close" class="absolute top-5 right-5 z-10 w-9 h-9 flex items-center justify-center text-ink-500 hover:text-navy-900 hover:bg-cream-100 transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+
+        <!-- ===== SUCCESS STATE ===== -->
+        <template x-if="$store.booking.submitted">
+          <div class="p-10 sm:p-14 text-center pop-in">
+            <div class="mx-auto mb-7 w-16 h-16 rounded-full border-2 border-gold-500 flex items-center justify-center">
+              <svg class="w-8 h-8 text-gold-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path class="check-path" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+              </svg>
+            </div>
+            <p class="text-gold-600 text-[11px] font-semibold tracking-widest2 uppercase mb-4">Request Sent</p>
+            <h2 class="font-display text-3xl text-navy-900 mb-4">You're almost on the water.</h2>
+            <p class="text-ink-700 leading-relaxed max-w-sm mx-auto mb-9">
+              Thank you, <span x-text="$store.booking.form.name || 'friend'" class="font-semibold text-navy-900"></span>. Captain Lenci's team will confirm your booking by email or phone shortly.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+              <a :href="$store.booking.whatsappLink()" target="_blank" class="inline-flex items-center justify-center gap-2 bg-wa-500 hover:bg-wa-600 text-white text-[12px] font-semibold tracking-widest2 uppercase px-7 py-3.5 transition-colors">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.5 15.2L2 22l4.9-1.5A10 10 0 1012 2zm0 18a8 8 0 01-4.1-1.1l-.3-.2-3 .9.9-2.9-.2-.3A8 8 0 1112 20zm4.4-5.9c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.8 1-.1.1-.3.2-.5.1-.2-.1-1-.4-2-1.2-.7-.6-1.2-1.4-1.4-1.6-.1-.2 0-.4.1-.5l.4-.4c.1-.1.1-.2.2-.4.1-.1 0-.3 0-.4-.1-.1-.5-1.3-.7-1.8-.2-.4-.4-.4-.5-.4h-.5c-.1 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.9 2.2 1 2.4c.1.1 1.7 2.6 4.1 3.6.6.2 1 .4 1.4.5.6.2 1.1.1 1.5.1.5-.1 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1-.1-.1-.2-.1-.4-.2z"/></svg>
+                Message us to confirm
+              </a>
+              <button type="button" @click="$store.booking.close()" class="inline-flex items-center justify-center gap-2 border border-navy-900/20 hover:border-navy-900 text-navy-900 text-[12px] font-semibold tracking-widest2 uppercase px-7 py-3.5 transition-colors">
+                Close
+              </button>
+            </div>
+          </div>
+        </template>
+
+        <!-- ===== FORM STATE ===== -->
+        <template x-if="!$store.booking.submitted">
+          <div class="p-8 sm:p-12">
+
+            <!-- header -->
+            <div class="text-center mb-8">
+              <p class="text-gold-600 text-[11px] font-semibold tracking-widest2 uppercase mb-4">Alson Boat Tour</p>
+              <h2 class="font-display text-4xl text-navy-900 mb-3">Book a Tour</h2>
+              <p class="text-ink-700 text-sm max-w-xs mx-auto">Book your adventure today and experience the beauty of Vlora's coastline!</p>
+            </div>
+
+            <!-- whatsapp shortcut -->
+            <a :href="$store.booking.whatsappLink()" target="_blank"
+               class="flex items-center justify-center gap-2.5 w-full bg-wa-500 hover:bg-wa-600 text-white text-[13px] font-semibold tracking-wide px-6 py-4 transition-colors mb-5">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.5 15.2L2 22l4.9-1.5A10 10 0 1012 2zm0 18a8 8 0 01-4.1-1.1l-.3-.2-3 .9.9-2.9-.2-.3A8 8 0 1112 20zm4.4-5.9c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.8 1-.1.1-.3.2-.5.1-.2-.1-1-.4-2-1.2-.7-.6-1.2-1.4-1.4-1.6-.1-.2 0-.4.1-.5l.4-.4c.1-.1.1-.2.2-.4.1-.1 0-.3 0-.4-.1-.1-.5-1.3-.7-1.8-.2-.4-.4-.4-.5-.4h-.5c-.1 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.9 2.2 1 2.4c.1.1 1.7 2.6 4.1 3.6.6.2 1 .4 1.4.5.6.2 1.1.1 1.5.1.5-.1 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1-.1-.1-.2-.1-.4-.2z"/></svg>
+              Book on WhatsApp
+            </a>
+
+            <div class="flex items-center gap-4 mb-8">
+              <span class="h-px flex-1 bg-sand-300"></span>
+              <span class="text-ink-500 text-xs uppercase tracking-widest2">or fill the form</span>
+              <span class="h-px flex-1 bg-sand-300"></span>
+            </div>
+
+            <!-- progress -->
+            <div class="flex items-center gap-3 mb-9">
+              <div class="flex-1">
+                <div class="h-[3px] w-full bg-sand-300"><div class="h-full bg-gold-500 step-line" :style="`width:${$store.booking.step>=1?100:0}%`"></div></div>
+                <p class="mt-2 text-[11px] tracking-widest2 uppercase" :class="$store.booking.step>=1 ? 'text-navy-900 font-semibold' : 'text-ink-500'">Basic Info</p>
+              </div>
+              <div class="flex-1">
+                <div class="h-[3px] w-full bg-sand-300"><div class="h-full bg-gold-500 step-line" :style="`width:${$store.booking.step>=2?100:0}%`"></div></div>
+                <p class="mt-2 text-[11px] tracking-widest2 uppercase" :class="$store.booking.step>=2 ? 'text-navy-900 font-semibold' : 'text-ink-500'">Booking Details</p>
+              </div>
+            </div>
+
+            <!-- ===== STEP 1 ===== -->
+            <div x-show="$store.booking.step===1" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4" x-transition:enter-end="opacity-100 translate-x-0">
+              <h3 class="font-display text-xl text-navy-900 mb-6">Basic Information</h3>
+
+              <div class="space-y-5">
+                <div>
+                  <label class="field-label">Full Name</label>
+                  <div class="relative">
+                    <svg class="field-icon w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 12a4.5 4.5 0 100-9 4.5 4.5 0 000 9zM4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+                    <input x-model="$store.booking.form.name" type="text" placeholder="Full Name" class="field" />
+                  </div>
+                </div>
+                <div>
+                  <label class="field-label">Email</label>
+                  <div class="relative">
+                    <svg class="field-icon w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M3 7l9 6 9-6"/></svg>
+                    <input x-model="$store.booking.form.email" type="email" placeholder="you@example.com" class="field" />
+                  </div>
+                </div>
+                <div>
+                  <label class="field-label">Phone Number</label>
+                  <div class="relative">
+                    <svg class="field-icon w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5c0 9.4 6.6 16 16 16l2-4-5-2-2 2c-2-1-4.5-3.5-5.5-5.5l2-2-2-5-4 2Z"/></svg>
+                    <input x-model="$store.booking.form.phone" type="tel" placeholder="+355 6X XXX XXXX" class="field" />
+                  </div>
+                </div>
+              </div>
+
+              <button type="button" @click="$store.booking.step=2" :disabled="!$store.booking.form.name || !$store.booking.form.email || !$store.booking.form.phone"
+                      class="mt-9 w-full inline-flex items-center justify-center gap-2 bg-navy-900 disabled:bg-navy-900/30 disabled:cursor-not-allowed hover:bg-navy-800 text-white text-[12px] font-semibold tracking-widest2 uppercase px-8 py-4 transition-colors">
+                Continue
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+
+            <!-- ===== STEP 2 ===== -->
+            <div x-show="$store.booking.step===2" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4" x-transition:enter-end="opacity-100 translate-x-0">
+              <h3 class="font-display text-xl text-navy-900 mb-6">Booking Details</h3>
+
+              <div class="space-y-5">
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <label class="field-label">People</label>
+                    <div class="relative">
+                      <svg class="field-icon w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path stroke-linecap="round" d="M2 20c0-3.3 3.1-6 7-6s7 2.7 7 6M16 8a3 3 0 110-6M22 20c0-2.7-1.8-5-4.5-5.8"/></svg>
+                      <input x-model="$store.booking.form.people" type="number" min="1" placeholder="e.g. 4" class="field !pl-9" />
+                    </div>
+                  </div>
+                  <div>
+                    <label class="field-label">Preferred Date</label>
+                    <div class="relative">
+                      <svg class="field-icon w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path stroke-linecap="round" d="M8 3v4M16 3v4M3 10h18"/></svg>
+                      <input x-model="$store.booking.form.date" type="date" class="field !pl-9" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <label class="field-label">Departure</label>
+                    <div class="relative">
+                      <svg class="field-icon w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M12 7v5l3 3"/></svg>
+                      <select x-model="$store.booking.form.departure" class="field !pl-9">
+                        <option value="08:00">08:00</option>
+                        <option value="09:00">09:00</option>
+                        <option value="10:30">10:30</option>
+                        <option value="17:30">17:30 (Sunset)</option>
+                      </select>
+                      <svg class="select-chevron w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="field-label">Payment</label>
+                    <div class="relative">
+                      <svg class="field-icon w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path stroke-linecap="round" d="M3 10h18"/></svg>
+                      <select x-model="$store.booking.form.payment" class="field !pl-9">
+                        <option>Cash</option>
+                        <option>Card</option>
+                        <option>Bank Transfer</option>
+                      </select>
+                      <svg class="select-chevron w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label class="field-label">Which Tour Are You Booking?</label>
+                  <div class="relative">
+                    <svg class="field-icon w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21s-7-6.1-7-11a7 7 0 1114 0c0 4.9-7 11-7 11z"/><circle cx="12" cy="10" r="2.4"/></svg>
+                    <select x-model="$store.booking.form.tour" class="field !pl-9">
+                      <option value="">— Select a tour —</option>
+                      <optgroup label="Private Tours">
+                        <option>Private Sunset Tour</option>
+                      </optgroup>
+                      <optgroup label="Group Tours">
+                        <option>Karaburun Peninsula &amp; Haxhi Ali Cave</option>
+                        <option>Karaburun Peninsula, Haxhi Ali Cave &amp; Sazan Island</option>
+                        <option>Secret Cave Tour</option>
+                      </optgroup>
+                      <optgroup label="Private Exclusive Tours">
+                        <option>Karaburun (4 Bays) + Haxhi Ali Cave</option>
+                        <option>Karaburun + Haxhi Ali Cave + Sazan Island</option>
+                        <option>Karaburun + Haxhi Ali Cave + Gjiri &amp; Shpella e Dafinës</option>
+                        <option>Karaburun + Haxhi Ali Cave + Gjiri &amp; Shpella e Dafinës + Gjiri i Bristanit</option>
+                        <option>Karaburun + Haxhi Ali Cave + Gjiri &amp; Shpella e Dafinës + Gjiri i Bristanit + Anglezit + Secret Cave</option>
+                        <option>Grama Bay + All Previous Destinations</option>
+                      </optgroup>
+                      <optgroup label="Rent a Boat">
+                        <option>Self-Guided Half-Day</option>
+                        <option>Self-Guided Full-Day</option>
+                      </optgroup>
+                    </select>
+                    <svg class="select-chevron w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
+                  </div>
+                </div>
+
+                <div>
+                  <label class="field-label">Special Requests / Notes</label>
+                  <textarea x-model="$store.booking.form.notes" rows="3" placeholder="Anything the crew should know?" class="field !pl-4 resize-none"></textarea>
+                </div>
+              </div>
+
+              <div class="mt-9 flex items-center gap-3">
+                <button type="button" @click="$store.booking.step=1" class="shrink-0 inline-flex items-center justify-center gap-2 border border-navy-900/20 hover:border-navy-900 text-navy-900 text-[12px] font-semibold tracking-widest2 uppercase px-6 py-4 transition-colors">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                  Back
+                </button>
+                <button type="button" @click="$store.booking.submitted=true"
+                        class="flex-1 inline-flex items-center justify-center gap-2 bg-gold-500 hover:bg-gold-600 text-navy-950 text-[12px] font-semibold tracking-widest2 uppercase px-8 py-4 transition-colors">
+                  Book Your Tour
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </template>
+
+      </div>
+    </div>
+
+    <script>
+      // global booking-modal store — any "Book Now" button anywhere on the page
+      // can call $store.booking.openModal() (optionally with a tour name to pre-fill)
+      document.addEventListener('alpine:init', () => {
+        Alpine.store('booking', {
+          open: false,
+          step: 1,
+          submitted: false,
+          form: { name:'', email:'', phone:'', people:'', date:'', departure:'08:00', tour:'', notes:'', payment:'Cash' },
+          openModal(presetTour){
+            this.open = true;
+            if (presetTour) this.form.tour = presetTour;
+          },
+          close(){
+            this.open = false;
+            setTimeout(() => this.reset(), 300);
+          },
+          reset(){
+            this.step = 1;
+            this.submitted = false;
+            this.form = { name:'', email:'', phone:'', people:'', date:'', departure:'08:00', tour:'', notes:'', payment:'Cash' };
+          },
+          whatsappLink(){
+            const f = this.form;
+            const lines = [
+              'Hi Alson Boat Tour! I would like to book a tour.',
+              f.name ? `Name: ${f.name}` : null,
+              f.people ? `People: ${f.people}` : null,
+              f.date ? `Date: ${f.date}` : null,
+              f.departure ? `Departure: ${f.departure}` : null,
+              f.tour ? `Tour: ${f.tour}` : null,
+              f.notes ? `Notes: ${f.notes}` : null,
+            ].filter(Boolean).join('\n');
+            return 'https://wa.me/355696962382?text=' + encodeURIComponent(lines);
+          }
+        });
+      });
+    </script>
+
+    <script>
+      // reveal-on-scroll
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { threshold: 0.15 });
+      document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    </script>
+
+  </body>
+</html>
